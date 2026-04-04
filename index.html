@@ -634,12 +634,14 @@ body {
     break-after: auto !important;
   }
 
-  /* Accent bar only on first page */
-  .page::before { display: none !important; }
-  #page1::before { display: block !important; transform: scaleY(1) !important; }
+  /* Accent bar on both pages */
+  .page::before { transform: scaleY(1) !important; }
 
-  /* Page 2 div always starts fresh PDF page */
+  /* Page 2 always starts a fresh PDF page */
   #page2 { page-break-before: always !important; break-before: page !important; }
+
+  /* Trim Phase 3 to 7 bullets in print (keep the 7 most impactful AI bullets) */
+  #page1 .bullets li:nth-child(n+8) { display: none !important; }
 
   /* ── Remove stats ── */
   .stats { display: none !important; }
@@ -880,14 +882,8 @@ body {
     </div>
   </div>
 
-</div><!-- /page 1 -->
 
-<div class="page-label">— Page 2 —</div>
-
-<!-- ═══════════════════════════════════════════ PAGE 2 ════════ -->
-<div class="page" id="page2">
-
-  <!-- Phase 2 & 1 — split properly -->
+  <!-- Phase 2 & 1 — all experience on page 1 -->
   <div class="reveal">
     <h2 class="section-title">Professional Experience (continued)</h2>
 
@@ -932,6 +928,13 @@ body {
       </ul>
     </div>
   </div>
+
+</div><!-- /page 1 -->
+
+<div class="page-label">— Page 2 —</div>
+
+<!-- ═══════════════════════════════════════════ PAGE 2 ════════ -->
+<div class="page" id="page2">
 
   <!-- Independent Portfolio -->
   <div class="reveal">
