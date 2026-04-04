@@ -134,6 +134,97 @@ body {
 
 .contact svg { flex-shrink: 0; }
 
+/* ─── Live Badge ─────────────────────────────────────────────── */
+.live-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 4px 10px 4px 8px;
+  border: 1px solid rgba(200, 137, 58, 0.35);
+  border-radius: 20px;
+  background: rgba(200, 137, 58, 0.06);
+  color: var(--accent-warm) !important;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-decoration: none !important;
+  position: relative;
+  overflow: hidden;
+  transition: background 0.35s ease, border-color 0.35s ease,
+              transform 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.35s ease !important;
+}
+
+/* Shimmer sweep on hover */
+.live-badge::before {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(200, 137, 58, 0.18),
+    transparent
+  );
+  transition: left 0.55s ease;
+  pointer-events: none;
+}
+
+/* Override the default contact underline effect */
+.live-badge::after { display: none !important; }
+
+.live-badge:hover {
+  background: rgba(200, 137, 58, 0.12) !important;
+  border-color: rgba(200, 137, 58, 0.65) !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 4px 16px rgba(200, 137, 58, 0.18) !important;
+  color: var(--accent-warm) !important;
+}
+.live-badge:hover::before { left: 160%; }
+
+/* Pulsing dot */
+.live-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--accent-warm);
+  flex-shrink: 0;
+  position: relative;
+}
+.live-dot::after {
+  content: '';
+  position: absolute;
+  inset: -3px;
+  border-radius: 50%;
+  background: var(--accent-warm);
+  opacity: 0.35;
+  animation: pulse-ring 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulse-ring {
+  0%, 100% { transform: scale(0.8); opacity: 0.5; }
+  50%       { transform: scale(1.6); opacity: 0; }
+}
+
+/* Print: render as clean URL, no badge chrome */
+@media print {
+  .live-badge {
+    background: none !important;
+    border: none !important;
+    padding: 0 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    transform: none !important;
+    font-size: 12px !important;
+    letter-spacing: 0 !important;
+    font-weight: 500 !important;
+  }
+  .live-dot, .live-dot::after { display: none !important; }
+  .live-badge::before { display: none !important; }
+}
+
 /* ─── Photo ──────────────────────────────────────────────────── */
 .photo-wrap {
   flex-shrink: 0;
@@ -628,7 +719,11 @@ body {
         <a href="tel:+923395764000">+92 339 5764000</a>
         <a href="https://linkedin.com/in/rukhtam-amin" target="_blank">LinkedIn ↗</a>
         <a href="https://github.com/Rukhtam" target="_blank">GitHub ↗</a>
-        <a href="https://rukhtam.github.io/rukhtam-amin-cv" target="_blank" class="live-link" style="color: var(--accent-warm); font-weight: 600;">rukhtam.github.io/rukhtam-amin-cv ↗</a>
+        <a href="https://rukhtam.github.io/rukhtam-amin-cv" target="_blank" class="live-badge">
+          <span class="live-dot"></span>
+          <span>View Live CV</span>
+          <svg width="10" height="10" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="opacity:0.7"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M7 17L17 7M17 7H7M17 7v10"/></svg>
+        </a>
       </div>
     </div>
     <div class="photo-wrap" id="photo">
