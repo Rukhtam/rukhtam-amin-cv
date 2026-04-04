@@ -603,15 +603,11 @@ body {
   .stat:last-child { border-bottom: none; }
 }
 
-/* ─── Print ──────────────────────────────────────────────────── */
-/* ── Print & PDF ──────────────────────────────────────────── */
-@page {
-  size: A4;
-  margin: 0;
-}
+/* ─── Print & PDF ────────────────────────────────────────────── */
+@page { size: A4; margin: 0; }
 
 @media print {
-  /* Kill ALL animations and transitions */
+  /* ── Kill all motion ── */
   *, *::before, *::after {
     animation: none !important;
     transition: none !important;
@@ -625,77 +621,110 @@ body {
     print-color-adjust: exact;
   }
 
+  /* ── Flatten two-card layout into continuous flow ── */
   .page {
     margin: 0 !important;
-    box-shadow: none !important;
-    padding: 0.45in 0.55in !important;
+    padding: 0 !important;
     max-width: 100% !important;
     width: 100% !important;
-    page-break-after: always !important;
-    break-after: page !important;
-    overflow: visible !important;
+    box-shadow: none !important;
     border-radius: 0 !important;
-  }
-
-  .page:last-child {
+    overflow: visible !important;
     page-break-after: auto !important;
     break-after: auto !important;
   }
 
-  /* Left accent bar — keep it visible in print */
-  .page::before {
-    transform: scaleY(1) !important;
-  }
+  /* Accent bar only on first page */
+  .page::before { display: none !important; }
+  #page1::before { display: block !important; transform: scaleY(1) !important; }
 
+  /* Page 2 div always starts fresh PDF page */
+  #page2 { page-break-before: always !important; break-before: page !important; }
+
+  /* ── Remove stats ── */
+  .stats { display: none !important; }
   .page-label { display: none !important; }
 
-  /* Force all animated elements to their final visible state */
+  /* ── Show all hidden/animated elements ── */
   .reveal, .name, .title, .contact, .photo-wrap,
   .section-title, .timeline-block, .project-card,
-  .stat, .award-item, .cert-item {
+  .award-item, .cert-item {
     opacity: 1 !important;
     transform: none !important;
     clip-path: none !important;
     visibility: visible !important;
   }
+  .section-title::after { width: 100% !important; }
 
-  /* Force section-title underline to full width */
-  .section-title::after {
-    width: 100% !important;
+  /* ── Aggressive print typography ── */
+  html { font-size: 11px !important; }
+  .name    { font-size: 30px !important; margin-bottom: 6px !important; }
+  .title   { font-size: 9.5px !important; margin-bottom: 10px !important; }
+  .contact { font-size: 10px !important; gap: 3px 12px !important; }
+  .summary {
+    font-size: 10.5px !important; line-height: 1.55 !important;
+    margin-bottom: 14px !important; padding-bottom: 14px !important;
+    max-width: 100% !important;
+  }
+  p, li       { font-size: 10.5px !important; line-height: 1.45 !important; }
+  .tl-role    { font-size: 12px !important; }
+  .tl-company { font-size: 10.5px !important; margin-bottom: 5px !important; }
+  .tl-period  { font-size: 10px !important; }
+  .section-title {
+    font-size: 8.5px !important;
+    margin-top: 14px !important; margin-bottom: 10px !important;
+    padding-bottom: 6px !important;
   }
 
-  /* Remove hover effects */
-  .project-card:hover,
-  .timeline-block:hover,
-  .tag:hover {
-    transform: none !important;
-    box-shadow: none !important;
-    border-color: inherit !important;
+  /* ── Aggressive spacing compression ── */
+  .header         { margin-bottom: 14px !important; padding-bottom: 14px !important; gap: 16px !important; }
+  .timeline-block { margin-bottom: 10px !important; padding-left: 14px !important; }
+  .tl-header      { margin-bottom: 2px !important; }
+  .bullets        { margin-top: 4px !important; }
+  .bullets li     { margin-bottom: 2px !important; }
+  .skill-group    { margin-bottom: 5px !important; }
+  .tag            { font-size: 9.5px !important; padding: 1px 5px !important; margin: 0 2px 2px 0 !important; }
+  .summary        { margin-bottom: 14px !important; }
+
+  /* ── Page-break hygiene ── */
+  .timeline-block, .project-card, .edu-item, .award-item, .cert-list li {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
   }
+  .section-title {
+    page-break-after: avoid !important;
+    break-after: avoid !important;
+  }
+  li { page-break-inside: avoid !important; }
 
-  /* Tighten spacing slightly for print */
-  body { font-size: 13px; }
-  p, li { font-size: 0.8rem !important; line-height: 1.5 !important; }
-  .section-title { margin-top: 1rem !important; }
-  .summary { font-size: 0.8rem !important; line-height: 1.6 !important; }
-  .timeline-block { margin-bottom: 18px !important; }
-
-  /* Ensure links are readable in print */
+  /* ── Links ── */
   a { color: inherit !important; text-decoration: none !important; }
   .contact a::after { display: none !important; }
 
-  /* Photo stays grayscale in print */
-  .photo-wrap img { filter: grayscale(100%) !important; }
+  /* ── Photo ── */
+  .photo-wrap img { filter: grayscale(100%) !important; width: 72px !important; height: 72px !important; }
 
-  /* Project grid — 2 col stays */
-  .project-grid { grid-template-columns: 1fr 1fr !important; }
-  .project-card { page-break-inside: avoid !important; break-inside: avoid !important; }
+  /* ── Projects ── */
+  .project-grid { grid-template-columns: 1fr 1fr !important; gap: 8px !important; }
+  .project-card { padding: 12px !important; }
+  .project-card__title { font-size: 11px !important; }
+  .project-card__desc  { font-size: 10px !important; line-height: 1.4 !important; }
+  .project-card__links { font-size: 9.5px !important; }
+  .project-card__tags  { margin-top: 6px !important; }
 
-  /* Avoid orphan bullets */
-  li { page-break-inside: avoid !important; break-inside: avoid !important; }
+  /* ── Two-col sidebar ── */
+  .two-col { gap: 20px !important; }
 
-  /* Don't show the live link underline animation in print */
-  .live-link::after { display: none !important; }
+  /* ── Live badge → plain URL ── */
+  .live-badge {
+    background: none !important; border: none !important;
+    padding: 0 !important; border-radius: 0 !important;
+    box-shadow: none !important; transform: none !important;
+    font-size: 10px !important; letter-spacing: 0 !important;
+    font-weight: 500 !important; gap: 3px !important;
+  }
+  .live-dot, .live-dot::after { display: none !important; }
+  .live-badge::before { display: none !important; }
 }
 
 </style>
